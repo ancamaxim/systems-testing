@@ -1,5 +1,5 @@
 from node import Node
-
+import unittest
 
 class Tree:
     """ Tree class for binary tree """
@@ -68,6 +68,14 @@ class Tree:
         if self.root is not None:
             self._printInorderTree(self.root)
 
+    def printPreorderTree(self):
+        if self.root is not None:
+            self._printPreorderTree(self.root)
+
+    def printPostorderTree(self):
+        if self.root is not None:
+            self._printPostorderTree(self.root)
+
     def _printInorderTree(self, node):
         if node is not None:
             self._printInorderTree(node.left)
@@ -76,10 +84,36 @@ class Tree:
 
     def _printPreorderTree(self, node):
         # TODO
-        pass
+        if node is not None:
+            print(str(node.data) + ' ')
+            self._printPreorderTree(node.left)
+            self._printPreorderTree(node.right)
 
     def _printPostorderTree(self, node):
         # TODO
-        pass
+        if node is not None:
+            self._printPostorderTree(node.left)
+            self._printPostorderTree(node.right)
+            print(str(node.data) + ' ')
 
+class TestTreeFind(unittest.TestCase):
+    def setUp(self):
+        self.tree = Tree()
+        self.tree.add(2)
+        self.tree.add(5)
+        self.tree.add(15)
+        self.tree.add(13)
 
+    def test_find_existing_element(self):
+        node = self.tree._find(13, self.tree.root)
+        self.assertIsNotNone(node)
+        self.assertEqual(node.data, 13)
+
+    def test_find_non_existing_element(self):
+        node = self.tree._find(21, self.tree.root)
+        self.assertIsNone(node)
+
+    def test_find_root_element(self):
+        node = self.tree._find(2, self.tree.root)
+        self.assertIsNotNone(node)
+        self.assertEqual(node.data, 2)
